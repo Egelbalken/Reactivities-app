@@ -33,6 +33,7 @@ namespace API
             {
                 var context = services.GetRequiredService<DataContext>();
                 await context.Database.MigrateAsync();
+                // Code first migrations:
                 // Now we call on the seed data
                 // When we use the await "async" we also need to change the method too
                 // line up the async function. We need to change declaration too "async Task Main()"
@@ -44,8 +45,8 @@ namespace API
                 logger.LogError(ex, "An error occured during the migration.");
             }
 
-            // Then we run the app from the host parameter.
-            host.Run();
+            // Then we run the app from the host parameter. await Async on host
+            await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
