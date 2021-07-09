@@ -1,23 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState,useEffect } from 'react';
 import './App.css';
+import axios from 'axios';
+import { Header, Icon, List } from 'semantic-ui-react';
+
+
 
 const App = () => {
+
+  //Hook to fetch the data
+  const [activities, setActivities] = useState([]);
+
+  // Use Effect
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/activities').then(response => {
+      setActivities(response.data)
+      console.log(response)
+    })
+    return () => {
+    }
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1>Reactivities</h1>
-        <p>Whit a C# backend</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header as='h2' icon="users" content='Reactivities' />
+       <List>{activities.map((activity: any) => (
+         <List.Item key={activity.id}>{activity.title}</List.Item>
+         ))}
+       </List>
     </div>
   );
 }
