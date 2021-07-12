@@ -1,7 +1,9 @@
 import React, { useState,useEffect } from 'react';
 import './App.css';
+// Axios API fetcher.
 import axios from 'axios';
-import { Header, Icon, List } from 'semantic-ui-react';
+// It is a type of component bootstrap
+import { Header, List } from 'semantic-ui-react';
 
 
 
@@ -10,7 +12,8 @@ const App = () => {
   //Hook to fetch the data
   const [activities, setActivities] = useState([]);
 
-  // Use Effect
+  // Use Effect whit axios get of api data. Whit the useEffect we get it one time
+  // insted of a infinitive loop from only the state hook.
   useEffect(() => {
     axios.get('http://localhost:5000/api/activities').then(response => {
       setActivities(response.data)
