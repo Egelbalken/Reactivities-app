@@ -1,0 +1,23 @@
+Learning goals of this project is:
+
+"Clean Architecture pattern." as a recomendation
+    C# .Net backend
+        CRUD & API
+            CORS + Mediator pattern
+                Debugging in VS Code
+                    DB SQLite
+                        React
+                            TypeScript
+                                semantic-ui-react "Bootstrap"
+                                    FORMS in React
+
+
+Install and run notes:
+
+This is a React application whit a .Net Core backend.
+Run the projects backend ./API/ start whit "dotnet watch run"
+Run the Projects frontend ./client-app/ start whit "npm start"
+to install, the dotnet use .NET sdk 5.101
+to install, nodejs type "npm install" in /client-app/ folder.
+
+

@@ -1,0 +1,8 @@
+React Notes:
+
+We are using the file structure from https://reactjs.org/docs/faq-structure.html
+as to plan to..
+
+We are uisng TypeScript for failsafty and to get the code to bee
+strongly typed. Inteleicens and bugs will be easyer handled.
+ 
