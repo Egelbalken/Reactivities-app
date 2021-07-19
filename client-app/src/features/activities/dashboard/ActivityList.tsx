@@ -4,9 +4,10 @@ import { Activity } from '../../../app/models/activity'
 
 interface Props {
     activities : Activity[];
+    selectActivity : (id: string) => void;
 }
 
-const ActivityList = ({activities}: Props) => {
+const ActivityList = ({activities, selectActivity}: Props) => {
     return (
         <Fragment>
             <Segment>
@@ -21,7 +22,7 @@ const ActivityList = ({activities}: Props) => {
                                 <div>{activity.city}, {activity.venue}</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button 
+                                <Button onClick={()=> selectActivity(activity.id)}
                                 floated="right" 
                                 content='View' 
                                 color='blue' />

@@ -3,23 +3,38 @@ import { Fragment } from 'react'
 import { Grid } from 'semantic-ui-react';
 import { Activity } from '../../../app/models/activity';
 import ActivitiesDetails from '../Details/ActivitiesDetails';
+import ActivityForm from '../Form/ActivityForm';
 import ActivityList from './ActivityList';
 
 // We specify the type av Activity[] then put it in as props.
+// Define type of props to pass 
 interface Props{
     activities: Activity[];
+    selectedActivity : Activity | undefined;
+    selectActivity : (id: string) => void;
+    cancelSelectActivity: () => void;
+    editMode : boolean;
+    openForm : (id: string) => void;
+    closeForm : () => void;
 }
 
-const ActivityDashboard = ({activities}: Props) => {
+const ActivityDashboard = ({activities, selectedActivity, 
+    selectActivity, cancelSelectActivity, editMode, openForm, closeForm}: Props) => {
     return (
         <Fragment>
             <Grid>
                 <Grid.Column width='10' >
-                <ActivityList activities={activities}/>
+                <ActivityList activities={activities} selectActivity={selectActivity}/>
                 </Grid.Column>
                 <Grid.Column width='6'>
-                    {activities[0] && 
-                    <ActivitiesDetails activity={activities[0]} />}
+                    {selectedActivity && !editMode &&
+                    <ActivitiesDetails activity={selectedActivity}
+                    cancelSelectActivity={cancelSelectActivity}
+                    openForm={openForm}
+
+                    />}
+                    {editMode &&
+                    <ActivityForm closeForm={closeForm} activity={selectedActivity}/>}
                 </Grid.Column>
             </Grid>
         </Fragment>
