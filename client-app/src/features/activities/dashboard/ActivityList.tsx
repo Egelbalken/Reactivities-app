@@ -5,9 +5,10 @@ import { Activity } from '../../../app/models/activity'
 interface Props {
     activities : Activity[];
     selectActivity : (id: string) => void;
+    deleteActivity : (id: string) => void;
 }
 
-const ActivityList = ({activities, selectActivity}: Props) => {
+const ActivityList = ({activities, selectActivity, deleteActivity}: Props) => {
     return (
         <Fragment>
             <Segment>
@@ -26,6 +27,10 @@ const ActivityList = ({activities, selectActivity}: Props) => {
                                 floated="right" 
                                 content='View' 
                                 color='blue' />
+                                <Button onClick={()=> deleteActivity(activity.id)}
+                                floated="right" 
+                                content='Delete' 
+                                color='red' />
                                 <Label basic content={activity.category}/>
                             </Item.Extra>
                         </Item.Content>
