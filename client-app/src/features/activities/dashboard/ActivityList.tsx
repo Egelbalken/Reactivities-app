@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, SyntheticEvent, useState } from 'react'
 import { Button, Item, Label, Segment } from 'semantic-ui-react'
 import { Activity } from '../../../app/models/activity'
 
@@ -6,9 +6,24 @@ interface Props {
     activities : Activity[];
     selectActivity : (id: string) => void;
     deleteActivity : (id: string) => void;
+    submitting: boolean;
 }
 
-const ActivityList = ({activities, selectActivity, deleteActivity}: Props) => {
+const ActivityList = ({
+    activities, 
+    selectActivity, 
+    deleteActivity, 
+    submitting}: Props) => {
+
+        const[target, setTarget] = useState("");
+
+        const deleteActivityHanlder = (
+            event: SyntheticEvent<HTMLButtonElement>, 
+            id:string) => {
+            setTarget(event.currentTarget.name);
+            deleteActivity(id);
+        }
+
     return (
         <Fragment>
             <Segment>
@@ -23,14 +38,18 @@ const ActivityList = ({activities, selectActivity, deleteActivity}: Props) => {
                                 <div>{activity.city}, {activity.venue}</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button onClick={()=> selectActivity(activity.id)}
+                                <Button 
+                                onClick={()=> selectActivity(activity.id)}
                                 floated="right" 
                                 content='View' 
                                 color='blue' />
-                                <Button onClick={()=> deleteActivity(activity.id)}
+                                <Button 
+                                onClick={(event)=> deleteActivityHanlder(event, activity.id)}
+                                name={activity.id}
                                 floated="right" 
                                 content='Delete' 
-                                color='red' />
+                                color='red' 
+                                loading={submitting && target === activity.id}/>
                                 <Label basic content={activity.category}/>
                             </Item.Extra>
                         </Item.Content>

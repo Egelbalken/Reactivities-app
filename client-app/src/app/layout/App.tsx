@@ -1,6 +1,5 @@
 import React, { useState,useEffect, Fragment } from 'react';
 // Axios API fetcher.
-import axios from 'axios';
 // It is a type of component bootstrap
 import { Container } from 'semantic-ui-react';
 // interface of a Activity whit a array
@@ -11,6 +10,8 @@ import ActivityDashboard from '../../features/activities/dashboard/ActivityDashb
 // uuid is a package that helps us create a unic id for our activtys.
 // It is sent dont in createOrEditActivityHandler
 import { v4 as uuid} from 'uuid';
+import agent from '../api/agent';
+import LoadingComponent from './LoadingComponent';
 
 
 const App = () => {
@@ -25,6 +26,14 @@ const App = () => {
   //Need to edit
   //a state to edit and create a activity when pushing button
   const [editMode, setEditMode] = useState(false);
+
+
+  // const for loading animation delay.. 
+  const [loading, setLoading] = useState(true);
+
+
+  // we add a state to see if we are submitting a change or create of a activity
+  const [submitting, setSubmitting] = useState(false);
 
   //a state for selected actiity
   const selectActivityHandler = (id: string) => {
@@ -47,16 +56,34 @@ const App = () => {
     setEditMode(false);
   }
 
-  // Creates a new activity or let us edit one existing. We allso 
+  // Creates a new activity or let us edit one existing. 
+  // If we have a activity whit an id, we update it. if not we create a new.
   const createOrEditActivityHandler =(activity: Activity)=> {
-    activity.id ? setActivities([...activities.filter(x => x.id !== activity.id), activity])
-    : setActivities([...activities, {...activity, id: uuid()}]);
-    setEditMode(false);
-    setSelectedActivity(activity);
+    setSubmitting(true);
+    if (activity.id){
+      agent.Activities.update(activity).then(() => {
+        setActivities([...activities.filter(x => x.id !== activity.id), activity]);
+        setSelectedActivity(activity)
+        setEditMode(false)
+        setSubmitting(false)
+      }) 
+    } else{
+        activity.id = uuid();
+        agent.Activities.create(activity).then(() => {
+          setActivities([...activities, activity]);
+          setSelectedActivity(activity)
+          setEditMode(false)
+          setSubmitting(false)
+      })
+    }
   }
 
   const deleteActivityHandler = (id: string) => {
-    setActivities([...activities.filter(x => x.id !== id)])
+    setSubmitting(true)
+    agent.Activities.delete(id).then(() => {
+      setActivities([...activities.filter(x => x.id !== id)]);
+      setSubmitting(false);
+    })
 
   }
 
@@ -64,12 +91,21 @@ const App = () => {
   // insted of a infinitive loop from only the state hook.
   // Via the interface we can set the type to Activity[] array.
   useEffect(() => {
-    axios.get<Activity[]>('http://localhost:5000/api/activities').then(response => {
-      setActivities(response.data)
+    agent.Activities.list().then(response => {
+      let activities: Activity[] = [];
+      response.forEach(activity => {
+        activity.date = activity.date.split('T')[0];
+        activities.push(activity);
+      })
+      setActivities(activities);
+      setLoading(false);
     })
     return () => {
     }
   }, [])
+
+  // We check if we are loading before going to the jsx content.
+  if(loading) return <LoadingComponent content='loading app'/>
 
   // Via the interface we can set the type to Activity[] array.
   return (
@@ -87,6 +123,7 @@ const App = () => {
        closeForm={formCloseHandler}
        createOrEditActivity={createOrEditActivityHandler}
        deleteActivity={deleteActivityHandler}
+       submitting = {submitting}
        />
       </Container>
     </Fragment>
