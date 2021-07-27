@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { Fragment } from 'react';
 // Axios API fetcher.
 // It is a type of component bootstrap
 import { Container } from 'semantic-ui-react';
@@ -8,34 +8,37 @@ import ActivityDashboard from '../../features/activities/dashboard/ActivityDashb
 
 // uuid is a package that helps us create a unic id for our activtys.
 // It is sent dont in createOrEditActivityHandler
-import LoadingComponent from './LoadingComponent';
-import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
+import { Route, useLocation } from 'react-router-dom';
+import HomePage from '../../features/Home/HomePage';
+import ActivityForm from '../../features/activities/Form/ActivityForm';
+import AboutPage from '../../features/About/AboutPage';
+import ActivitiesDetails from '../../features/activities/Details/ActivitiesDetails';
 
 
 const App = () => {
 
-  const {activityStore} = useStore();
+  // To restart the initial parameters when in editing, and whnat to create a 
+  // new activity.
+  const location = useLocation();
 
-
-  // Use Effect whit axios get of api data. Whit the useEffect we get it one time
-  // insted of a infinitive loop from only the state hook.
-  // Via the interface we can set the type to Activity[] array.
-  useEffect(() => {
-    activityStore.loadActivities();
-  }, [activityStore])
-
-  // We check if we are loading before going to the jsx content.
-  if(activityStore.loadingInitial) return <LoadingComponent content='loading app'/>
-
-  // Via the interface we can set the type to Activity[] array.
   return (
     <Fragment>
-      <Navbar/>
-      <Container 
-      style={{marginTop: '10em'}}>
-       <ActivityDashboard />
-      </Container>
+      <Route exact path='/' component={HomePage} />
+      <Route 
+        path={'/(.+)'} render={() =>( 
+        <>  
+        <Navbar/>
+        <Container 
+          style={{marginTop: '10em'}}>
+          <Route exact path='/activities' component={ActivityDashboard} />
+          <Route path='/activities/:id' component={ActivitiesDetails} />
+          <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
+          <Route path='/about' component={AboutPage} />
+        </Container>
+        </>
+        )}
+      />
     </Fragment>
   );
 }

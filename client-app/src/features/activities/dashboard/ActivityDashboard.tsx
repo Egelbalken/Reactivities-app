@@ -1,17 +1,26 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Fragment } from 'react'
 import { Grid } from 'semantic-ui-react';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { useStore } from '../../../app/stores/store';
-import ActivitiesDetails from '../Details/ActivitiesDetails';
-import ActivityForm from '../Form/ActivityForm';
 import ActivityList from './ActivityList';
 
 
 const ActivityDashboard = () => {
 
         const { activityStore } = useStore()
-        const {selectedActivity, editMode } = activityStore;
+        const {loadActivities, activityRegistry} = activityStore;
+
+        // Use Effect whit axios get of api data. Whit the useEffect we get it one time
+        // insted of a infinitive loop from only the state hook.
+        // Via the interface we can set the type to Activity[] array.
+        useEffect(() => {
+          if (activityRegistry.size <= 1) loadActivities();
+        }, [activityRegistry.size, loadActivities])
+      
+        // We check if we are loading before going to the jsx content.
+        if(activityStore.loadingInitial) return <LoadingComponent content='loading app'/>
     return (
         <Fragment>
             <Grid>
@@ -19,11 +28,7 @@ const ActivityDashboard = () => {
                 <ActivityList />
                 </Grid.Column>
                 <Grid.Column width='6'>
-                    {selectedActivity && !editMode &&
-                    <ActivitiesDetails />}
-                    {editMode &&
-                    <ActivityForm />}
-                    
+                    <h2>Activity filters</h2>
                 </Grid.Column>
             </Grid>
         </Fragment>
