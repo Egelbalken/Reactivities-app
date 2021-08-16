@@ -1,58 +1,29 @@
 import { observer } from 'mobx-react-lite';
-import React, { Fragment, SyntheticEvent, useState } from 'react'
-import { Link } from 'react-router-dom';
-import { Button, Item, Label, Segment } from 'semantic-ui-react'
+import React, { Fragment } from 'react'
+import { Header } from 'semantic-ui-react'
 import { useStore } from '../../../app/stores/store';
+import ActivityListItem from './ActivityListItem';
 
 
 const ActivityList = () => {
     const { activityStore } = useStore();
-    const {deleteActivity, activitiesByDate, loading} = activityStore;
+    const {groupedActivities} = activityStore;
 
-        const[target, setTarget] = useState("");
-
-        const deleteActivityHanlder = (
-            event: SyntheticEvent<HTMLButtonElement>, 
-            id:string) => {
-            setTarget(event.currentTarget.name);
-            deleteActivity(id);
-        }
-
-
+    // Group activites by date in the card. map over the groups, 
+    // then map over activity.
     return (
         <Fragment>
-            <Segment>
-            <Item.Group divided>
-                {activitiesByDate.map(activity => (
-                    <Item key={activity.id}>
-                        <Item.Content>
-                            <Item.Header as='a'>{activity.title}</Item.Header>
-                            <Item.Meta>{activity.date}</Item.Meta>
-                            <Item.Description>
-                                <div>{activity.description}</div>
-                                <div>{activity.city}, {activity.venue}</div>
-                            </Item.Description>
-                            <Item.Extra>
-                                <Button 
-                                as={Link} to={`/activities/${activity.id}`} 
-                                floated="right" 
-                                content='View' 
-                                color='blue' />
-                                <Button 
-                                onClick={(event)=> deleteActivityHanlder(event, activity.id)}
-                                name={activity.id}
-                                floated="right" 
-                                content='Delete' 
-                                color='red' 
-                                loading={loading && target === activity.id}/>
-                                <Label basic content={activity.category}/>
-                            </Item.Extra>
-                        </Item.Content>
-                    </Item>))}
-            </Item.Group>
-            </Segment>   
+            {groupedActivities.map(([group, activities]) => (
+                <Fragment key={group}>
+                    <Header sub color='teal'>
+                        {group}
+                    </Header>
+                        {activities.map(activity => (
+                        <ActivityListItem key={activity.id} activity={activity}/>
+                        ))}
+                </Fragment>
+            ))}
         </Fragment>
     )
 }
-
 export default observer(ActivityList)

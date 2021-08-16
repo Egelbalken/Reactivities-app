@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // Global css for all styling.
+import 'react-calendar/dist/Calendar.css';
 import './app/layout/styles.css';
 import App from './app/layout/App';
 import reportWebVitals from './reportWebVitals';
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css';
 import { store, StoreContext } from './app/stores/store';
 import { BrowserRouter } from 'react-router-dom';
 
