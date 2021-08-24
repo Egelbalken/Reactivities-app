@@ -12,15 +12,15 @@ namespace API.Controllers
         /// CRUD - MVC
         /// Takes in the Inherenc Mediator from BaseApiController insted of
         /// implement the Mediator here. Then we get a "thiner" controller.
-        
+
         /// <summary>
         /// Get all activities
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<Activity>>> GetActivities()
+        public async Task<IActionResult> GetActivities()
         {
-            return await Mediator.Send(new List.Query());
+            return HandleResult(await Mediator.Send(new List.Query()));
         }
 
         /// <summary>
@@ -30,9 +30,10 @@ namespace API.Controllers
         /// <param name="id"></param>
         /// <returns>Get all activity details on id</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Activity>> GetActivity(Guid id)
+        public async Task<IActionResult> GetActivity(Guid id)
         {
-            return await Mediator.Send(new Details.Query{Id= id});
+            // Method from BaseApi for handle the validation statsment.
+            return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateActivity(Activity activity)
         {
-            return Ok(await Mediator.Send(new Create.Command {Activity = activity}));
+            return HandleResult(await Mediator.Send(new Create.Command { Activity = activity }));
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace API.Controllers
         public async Task<IActionResult> EditActivity(Guid id, Activity activity)
         {
             activity.Id = id;
-            return Ok(await Mediator.Send(new Edit.Command {Activity = activity }));
+            return HandleResult(await Mediator.Send(new Edit.Command { Activity = activity }));
         }
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivity(Guid id)
         {
-            return Ok(await Mediator.Send(new Delete.Command{Id=id}));
+            return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
         }
     }
 }

@@ -9,11 +9,15 @@ import ActivityDashboard from '../../features/activities/dashboard/ActivityDashb
 // uuid is a package that helps us create a unic id for our activtys.
 // It is sent dont in createOrEditActivityHandler
 import { observer } from 'mobx-react-lite';
-import { Route, useLocation } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import HomePage from '../../features/Home/HomePage';
 import ActivityForm from '../../features/activities/Form/ActivityForm';
 import AboutPage from '../../features/About/AboutPage';
 import ActivitiesDetails from '../../features/activities/Details/ActivitiesDetails';
+import TestErrors from '../../features/errors/TestError';
+import { ToastContainer } from 'react-toastify';
+import NotFound from '../../features/errors/NotFound';
+import ServerError from '../../features/errors/ServerError';
 
 
 const App = () => {
@@ -22,23 +26,31 @@ const App = () => {
   // new activity.
   const location = useLocation();
 
+  // When using the <Switch> we can exclude all the conent not in use.
+  // So, when a bad link is opend we routes to the NotFound. 
+  // Or.. if we click NotFoudn button we execute that byggyrepport.
   return (
     <Fragment>
+      <ToastContainer position={'bottom-right'} hideProgressBar />
       <Route exact path='/' component={HomePage} />
       <Route 
         path={'/(.+)'} render={() =>( 
-        <>  
+          <>  
         <Navbar/>
-        <Container 
-          style={{marginTop: '10em'}}>
+        <Container style={{marginTop: '10em'}}>
+          <Switch>
           <Route exact path='/activities' component={ActivityDashboard} />
           <Route path='/activities/:id' component={ActivitiesDetails} />
           <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
           <Route path='/about' component={AboutPage} />
+          <Route path='/errors' component={TestErrors} />
+          <Route path='/server-error' component={ServerError}/>
+          <Route component={NotFound} />
+          </Switch>
         </Container>
         </>
         )}
-      />
+        />
     </Fragment>
   );
 }

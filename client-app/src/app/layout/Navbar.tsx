@@ -16,6 +16,7 @@ const Navbar = () => {
                     Imonit Reactivities
                 </Menu.Item>
                 <Menu.Item as={NavLink} to='/activities' name='Activities'/>
+                <Menu.Item as={NavLink} to='/errors' name='Errors'/>
                 <Menu.Item as={NavLink} to='/about' name='About' />
                 <Menu.Item >
                     <Button 
