@@ -1,0 +1,9 @@
+********** FAQ **********
+
+API Controllers.
+When adding something you need to restart the server.
+
+
+
+SQL
+Migrations.. you need to stop the server when initialize a new migration.

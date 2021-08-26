@@ -20,6 +20,8 @@ using Application.Core;
 using API.Extenstions;
 using FluentValidation.AspNetCore;
 using API.Middleware;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace API
 {
@@ -32,7 +34,6 @@ namespace API
         public Startup(IConfiguration config)
         {
             _config = config;
-
         }
 
 
@@ -40,20 +41,32 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Services for controllers.
-            services.AddControllers();
 
             // Specify that we using dluent validation in ActivityController
-            services.AddControllers().AddFluentValidation(config =>
+            services.AddControllers(options =>
             {
-                config.RegisterValidatorsFromAssemblyContaining<Create>();
-            });
+                // Adding a AuthorizationPolicy
+                // Enables that every single endponts requiers Authentication.
+                // unless we tell it do dont..
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            })
+                .AddFluentValidation(config =>
+                {
+                    config.RegisterValidatorsFromAssemblyContaining<Create>();
+                });
 
-            // Cleaned up services.. We moved them to /Extenstions/ApplicationServices.cs
+            // Cleaned up services.. 
+            // We moved them to /Extenstions/ApplicationServices.cs
             services.AddAplicationServices(_config);
+
+            // Add the "Made" AddIdentityServices as a serivces from Extensions.cs 
+            // that is added in using.
+            services.AddIdentityServices(_config);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime. 
+        // Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Custom error/exeption middleware
@@ -70,6 +83,8 @@ namespace API
             app.UseRouting();
 
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

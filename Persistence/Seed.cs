@@ -3,13 +3,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context)
+        /// <summary>
+        /// The SeedData method will from the Program.cs Seed users and activitys if we dont have any.
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <param name="userManager">Users in the userManager</param>
+        /// <returns></returns>
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
+            // If wi dont have any users...
+            if (!userManager.Users.Any())
+            {
+                // We Seed the users here.
+                var users = new List<AppUser>
+                {
+                    new AppUser
+                    {
+                        DisplayName = "Bob",
+                        UserName = "bob",
+                        Email = "bob@test.com",
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Tom",
+                        UserName = "tom",
+                        Email = "tom@test.com",
+                    },
+                    new AppUser
+                    {
+                        DisplayName = "Jane",
+                        UserName = "jane",
+                        Email = "jane@test.com",
+                    },
+                     new AppUser
+                    {
+                        DisplayName = "Kent",
+                        UserName = "kent",
+                        Email = "kent@test.com",
+                    },
+                };
+
+                // Creta a seeded password for alla of the Seeded users.
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
+                }
+            }
+
             if (context.Activities.Any()) return;
 
             var activities = new List<Activity>

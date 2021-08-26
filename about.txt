@@ -23,3 +23,4 @@ to install, nodejs type "npm install" in /client-app/ folder.
 Run the projects backend ./API/ start whit "dotnet watch run"
 Run the Projects frontend ./client-app/ start whit "npm start"
 
+JWT = json web token -- Never put confidential info in it. IT CAN  BE READ!!
