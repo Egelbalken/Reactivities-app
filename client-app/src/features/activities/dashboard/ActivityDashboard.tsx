@@ -21,7 +21,7 @@ const ActivityDashboard = () => {
         }, [activityRegistry.size, loadActivities])
       
         // We check if we are loading before going to the jsx content.
-        if(activityStore.loadingInitial) return <LoadingComponent content='loading app'/>
+        if(activityStore.loadingInitial) return <LoadingComponent content='loading activities...'/>
     return (
         <Fragment>
             <Grid>

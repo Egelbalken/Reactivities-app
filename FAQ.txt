@@ -7,3 +7,5 @@ When adding something you need to restart the server.
 
 SQL
 Migrations.. you need to stop the server when initialize a new migration.
+
+When saving somthing to a store "useStore" in a component make it a observer()

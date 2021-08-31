@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { Activity } from "../models/activity";
+import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 
 // We want to have a realistic feel to the app and slow it down.
@@ -14,6 +15,18 @@ const sleep = (delay : number) => {
 
 // Hardcoded way to the api backend
 axios.defaults.baseURL = "http://localhost:5000/api";
+
+// We sending upp a allredy loaded token from localstroage.
+// If we update the site the user will otherwise get lost.
+// To prevent this we fetch the stored token and then reuse it if we have that user.
+// This code ensure that we send a token whit every single requst to the store.
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+    if(token){
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+})
 
 // Axios interseptors, delay on api respond.
 axios.interceptors.response.use(async response => {
@@ -80,10 +93,17 @@ const Activities = {
     delete: (id: string) => axios.delete<void>(`/activities/${id}`)
 }
 
+const Account = {
+    current: () => requests.get<User>('/account'),
+    login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+    register: (user: UserFormValues) => requests.post<User>('/account/register', user)
+}
+
 // Create and export the object whit the list of activitys.
 
 const agent = {
-    Activities
+    Activities,
+    Account
 }
 
 export default agent;

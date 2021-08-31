@@ -28,8 +28,6 @@ namespace API.Extenstions
             services.AddIdentityCore<AppUser>(options =>
             {
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
             })
 
             .AddEntityFrameworkStores<DataContext>()
@@ -39,9 +37,9 @@ namespace API.Extenstions
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(option =>
+                .AddJwtBearer(options =>
                 {
-                    option.TokenValidationParameters = new TokenValidationParameters
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = key,

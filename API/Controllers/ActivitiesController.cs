@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     public class ActivitiesController : BaseApiController
     {
         /// CRUD - MVC

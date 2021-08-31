@@ -75,11 +75,15 @@ namespace API.Controllers
         {
             if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
             {
-                return BadRequest("Email already taken!");
+                // Formats the error as a validation object
+                ModelState.AddModelError("email", "Email already taken!");
+                return ValidationProblem();
             }
             if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
             {
-                return BadRequest("Username already taken!");
+                // Formats the error as a validation object
+                ModelState.AddModelError("username", "Username already taken!");
+                return ValidationProblem();
             }
 
             var user = new AppUser
@@ -96,7 +100,7 @@ namespace API.Controllers
                 return CreateUserObject(user);
             }
 
-            return BadRequest("Problem to registering a new user.");
+            return BadRequest("Problem to registering a new users.");
         }
 
         /// <summary>
@@ -117,7 +121,7 @@ namespace API.Controllers
         /// endpoints in this Controller. We dont go "dry".
         /// </summary>
         /// <param name="user"></param>
-        /// <returns></returns>
+        /// <returns>a new user data transfer objekt</returns>
         private UserDto CreateUserObject(AppUser user)
         {
             return new UserDto

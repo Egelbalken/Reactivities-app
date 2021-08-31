@@ -1,8 +1,9 @@
 import React from 'react'
 import { Message } from 'semantic-ui-react'
 
+//cheating by useing any.. the also specify i: any when maping.
 interface Props{
-    errors: string[] | null;
+    errors: any;
 }
 
 const ValidationErrors = ({errors}: Props) => {
@@ -10,8 +11,8 @@ const ValidationErrors = ({errors}: Props) => {
         <Message error>
             {errors && (
                 <Message.List>
-                    {errors.map((err: any, i) => (
-                        <Message.Item key={i}>{err}</Message.Item>))}
+                    {errors.map((error: any, i: any) => (
+                        <Message.Item key={i}>{error}</Message.Item>))}
                 </Message.List>)}
         </Message>
     )

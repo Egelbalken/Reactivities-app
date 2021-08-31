@@ -84,6 +84,7 @@ namespace API
 
             app.UseCors("CorsPolicy");
 
+            // Need to be before we app.UseAuthorization();
             app.UseAuthentication();
 
             app.UseAuthorization();
