@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Application.Profiles;
 
-namespace Domain
+/// <summary>
+/// DTO to connect users to activities
+/// </summary>
+namespace Application.Activities
 {
-    public class Activity
+    public class ActivityDto
     {
         public Guid Id { get; set; }
 
@@ -21,9 +25,10 @@ namespace Domain
 
         public bool IsCancelled { get; set; }
 
-        // get the the attendees, create a new list to of it to it.
-        // Join entity table
-        public ICollection<ActivityAttendee> Attendees { get; set; } = new List<ActivityAttendee>();
+        // Profiles connects attendees and users
+        public string HostUserName { get; set; }
+
+        public ICollection<Profile> Attendees { get; set; }
 
     }
 }

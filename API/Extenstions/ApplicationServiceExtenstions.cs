@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Application.Activities;
 using Application.Core;
+using Application.Interfaces;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +38,9 @@ namespace API.Extenstions
             // Tells MediatR where to find our handlers.
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            // Added interfaces as services so we can reach 
+            // currently logged in username from everywhere in application.
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }
