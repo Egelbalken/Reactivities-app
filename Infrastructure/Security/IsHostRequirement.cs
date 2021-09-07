@@ -18,16 +18,20 @@ namespace Infrastructure.Security
     {
         private readonly DataContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public IsHostRequirementHandler(DataContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public IsHostRequirementHandler(DataContext dbContext,
+            IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             _dbContext = dbContext;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IsHostRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
+            IsHostRequirement requirement)
         {
+            // Cliam the Id type from DB (ID cobination of user and activity)
             var userId = context.User
                 .FindFirstValue(ClaimTypes.NameIdentifier);
+
 
             // The user is not auth
             if (userId == null)
@@ -39,6 +43,7 @@ namespace Infrastructure.Security
                 .SingleOrDefault(x => x.Key == "id").Value?.ToString());
 
             // Protect the auth to the host so it dont disconnects from the activity
+            // Releases the memory of attendee.
             var attendee = _dbContext.ActivityAttendees
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.AppUserId == userId && x.ActivityId == activityId).Result;

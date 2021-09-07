@@ -23,13 +23,14 @@ namespace Application.Activities
         {
             private readonly DataContext _context;
             private readonly IUserAccessor _userAccessor;
-            public Hanlder(DataContext context, IUserAccessor accessor)
+            public Hanlder(DataContext context, IUserAccessor userAccessor)
             {
-                _userAccessor = accessor;
+                _userAccessor = userAccessor;
                 _context = context;
             }
 
-            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request,
+                CancellationToken cancellationToken)
             {
                 var activity = await _context.Activities
                 .Include(a => a.Attendees)
@@ -53,7 +54,8 @@ namespace Application.Activities
                 var hostUserName = activity.Attendees
                 .FirstOrDefault(x => x.IsHost)?.AppUser?.UserName;
 
-                var attendance = activity.Attendees.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
+                var attendance = activity.Attendees.FirstOrDefault(x =>
+                    x.AppUser.UserName == user.UserName);
 
                 if (attendance != null && hostUserName == user.UserName)
                 {
@@ -79,7 +81,8 @@ namespace Application.Activities
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem updating the attendance.");
+                return result ? Result<Unit>.Success(Unit.Value) :
+                    Result<Unit>.Failure("Problem updating the attendance.");
 
             }
         }

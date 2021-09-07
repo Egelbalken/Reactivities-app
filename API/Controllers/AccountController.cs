@@ -127,7 +127,8 @@ namespace API.Controllers
             return new UserDto
             {
                 DisplayName = user.DisplayName,
-                Image = user.Email,
+                // Bug corected, image was set to a user.email,
+                Image = null,
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user)
             };

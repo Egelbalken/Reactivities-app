@@ -26,7 +26,7 @@ namespace Application.Activities
         public bool IsCancelled { get; set; }
 
         // Profiles connects attendees and users
-        public string HostUserName { get; set; }
+        public string HostUsername { get; set; }
 
         public ICollection<Profile> Attendees { get; set; }
 

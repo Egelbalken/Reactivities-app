@@ -12,7 +12,7 @@ import FormTextArea from '../../../app/common/form/FormTextArea';
 import FormSelectCategory from '../../../app/common/form/FormSelectCategory';
 import { categoryOptions } from '../../../app/common/options/FormOptions';
 import FormDateInput from '../../../app/common/form/FormDateInput';
-import { Activity } from '../../../app/models/activity';
+import { ActivityFormValues } from '../../../app/models/activity';
 import { v4 as uuid } from 'uuid';
 
 
@@ -20,19 +20,11 @@ import { v4 as uuid } from 'uuid';
     const history = useHistory();
     const { activityStore } = useStore();
     const { createActivity, updateActivity, 
-        loading, loadActivity, loadingInitial } = activityStore;
+         loadActivity, loadingInitial } = activityStore;
     const { id } = useParams<{id:string}>()
 
     // Initial state values..
-    const [activity, setActivity] = useState<Activity>({
-        id: '',
-        title: '',
-        category: '',
-        description: '',
-        city: '',
-        date: null,
-        venue: '',
-    });
+    const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
     const validationSchema = Yup.object({
         title: Yup.string().required('The activity title is required.'),
@@ -44,13 +36,13 @@ import { v4 as uuid } from 'uuid';
     })
 
     useEffect(() => {
-        if(id) loadActivity(id).then(activity => setActivity(activity!));
+        if(id) loadActivity(id).then(activity => setActivity(new ActivityFormValues(activity)));
     }, [id,loadActivity])
   
     /*
     */
-    const handleFormSubmit = (activity: Activity) => {
-        if(activity.id.length === 0){
+    const handleFormSubmit = (activity: ActivityFormValues) => {
+        if(!activity.id){
             let newActivity = {
                 ...activity,
                 id: uuid()
@@ -89,7 +81,7 @@ import { v4 as uuid } from 'uuid';
                     <FormTextInput name='venue' placeholder='Venue' />
                     <Button
                         disabled={isSubmitting || !dirty || !isValid} 
-                        loading={loading} 
+                        loading={isSubmitting} 
                         floated='right' 
                         positive 
                         type='submit' 

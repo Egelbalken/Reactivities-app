@@ -59,7 +59,7 @@ namespace API.Extenstions
                 });
             });
 
-            //
+            // this will last as long as we need the method
             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
             services.AddScoped<TokenService>();
 
