@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Application.Activities;
 using Application.Core;
 using Application.Interfaces;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,12 @@ namespace API.Extenstions
             // Added interfaces as services so we can reach 
             // currently logged in username from everywhere in application.
             services.AddScoped<IUserAccessor, UserAccessor>();
+
+            // Adding the serves to PhotoAccessor
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            // Adds services for adding the images from www.cloudinary.com
+            // Check exact speling from apps.json
+            services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
 
             return services;
         }

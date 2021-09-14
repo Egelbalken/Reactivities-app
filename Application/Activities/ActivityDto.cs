@@ -28,7 +28,7 @@ namespace Application.Activities
         // Profiles connects attendees and users
         public string HostUsername { get; set; }
 
-        public ICollection<Profile> Attendees { get; set; }
+        public ICollection<AttendeeDto> Attendees { get; set; }
 
     }
 }

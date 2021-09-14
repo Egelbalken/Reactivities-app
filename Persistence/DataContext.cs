@@ -19,6 +19,8 @@ namespace Persistence
 
         public DbSet<ActivityAttendee> ActivityAttendees { get; set; }
 
+        public DbSet<Photo> Photos { get; set; }
+
         // override the DB contextModel to specify the tables
         /// <summary>
         /// aa = ActicityAttendee
