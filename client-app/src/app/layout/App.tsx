@@ -22,6 +22,7 @@ import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
+import profilePage from '../../features/profiles/ProfilePage';
 
 
 const App = () => {
@@ -62,6 +63,7 @@ const App = () => {
           <Route path='/activities/:id' component={ActivitiesDetails} />
           <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
           <Route path='/about' component={AboutPage} />
+          <Route path='/profiles/:username' component={profilePage}/>
           <Route path='/errors' component={TestErrors} />
           <Route path='/server-error' component={ServerError}/>
           <Route path='/login' component={LoginForm}/>

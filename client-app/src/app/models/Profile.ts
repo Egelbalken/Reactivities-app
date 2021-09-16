@@ -5,6 +5,7 @@ export interface Profile {
     displayName: string;
     image?: string;
     bio?: string;
+    photos?: Photo[];
 }
 
 // Class and Inteface can use same name.
@@ -15,4 +16,11 @@ export class Profile implements Profile {
         this.displayName = user.displayName;
         this.image = user.image;
     }
+}
+
+// Profile model interface
+export interface Photo {
+    id: string;
+    url: string;
+    isMain: boolean;
 }

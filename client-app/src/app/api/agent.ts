@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { Activity, ActivityFormValues } from "../models/activity";
+import { Photo, Profile } from "../models/Profile";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 
@@ -94,18 +95,35 @@ const Activities = {
     attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {})
 }
 
-// object whit current user and login and register.
+// Object whit current user and login and register.
 const Account = {
     current: () => requests.get<User>('/account'),
     login: (user: UserFormValues) => requests.post<User>('/account/login', user),
     register: (user: UserFormValues) => requests.post<User>('/account/register', user)
 }
 
-// Create and export the object whit the list of activitys.
+// Object to get the users profile
+const Profiles = {
+    get: (username:string) => requests.get<Profile>(`/profiles/${username}`),
+    // method for upploading the file profile image photo
+    uploadPhoto: (file: Blob) => {
+        let formData = new FormData();
+        formData.append('File', file);
+        return axios.post<Photo>('photos',formData, {
+            headers: {'Content-type': 'multipart/form-data'}
+        })
+    },
+// Object that sets the main photo of choise
+setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+deletePhoto: (id: string) => requests.del(`/photos/${id}`)
+}
 
+// Create and export the object whit the list of activitys.
 const agent = {
     Activities,
     Account,
+    Profiles,
 }
+
 
 export default agent;
