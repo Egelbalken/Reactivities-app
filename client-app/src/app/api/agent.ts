@@ -7,6 +7,13 @@ import { Photo, Profile } from "../models/Profile";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 
+/*
+
+            NOTE!! THIS TS.script is for the API requests and responses
+            from the API BACKEND. Axios is used to manage the connection.
+
+*/
+
 // We want to have a realistic feel to the app and slow it down.
 const sleep = (delay : number) => {
     return new Promise((resolve) => {
@@ -115,7 +122,10 @@ const Profiles = {
     },
 // Object that sets the main photo of choise
 setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
-deletePhoto: (id: string) => requests.del(`/photos/${id}`)
+// Deletes the photo
+deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+// Update the profile bio and username
+updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile)
 }
 
 // Create and export the object whit the list of activitys.

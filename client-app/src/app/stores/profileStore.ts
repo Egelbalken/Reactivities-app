@@ -8,6 +8,7 @@ export default class ProfileStor{
     loadingProfile = false;
     uploadingPhoto = false;
     loadingSetMainOrDel = false;
+    updatingDisplayName = false; 
 
     constructor(){
         makeAutoObservable(this);
@@ -93,6 +94,27 @@ export default class ProfileStor{
         }catch(error){
             runInAction(() => this.loadingSetMainOrDel = false);
             console.log(error);
+        }
+    }
+
+    // Method for changeing/updating the users DisplayName.
+    updateProfile = async (profile: Partial<Profile>) => {
+        this.updatingDisplayName = true;
+        try{
+            await agent.Profiles.updateProfile(profile)
+            runInAction(() => {
+                if(profile.displayName && profile.displayName 
+                    !== store.userStore.user?.displayName){
+                        store.userStore.setDisplayName(profile.displayName);
+                }
+                //Bio
+                
+                this.profile = {...this.profile, ...profile as Profile};
+                this.updatingDisplayName = false;
+            })
+        }catch(error){
+            console.log(error);
+            runInAction(() => this.updatingDisplayName = false);
         }
     }
 }

@@ -69,4 +69,12 @@ export default class UserStore {
         }
 
     }
+
+    // helper method to update profile username
+    setDisplayName = (name: string) => {
+        if(this.user){
+            this.user.displayName = name;
+        }
+    }
+
 }
