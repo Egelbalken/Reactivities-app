@@ -58,3 +58,7 @@ div.divider.text{
   margin-top: -10px;
   font-size: 15px;}
 /*end home page styles*/
+
+.ui.form textarea{
+  margin-top: 5px;
+}

@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.Tasks;
 using API.Services;
 using Domain;
 using Infrastructure.Security;
@@ -47,6 +48,23 @@ namespace API.Extenstions
                         IssuerSigningKey = key,
                         ValidateIssuer = false,
                         ValidateAudience = false,
+                    };
+
+                    // Authenticatuin for Option SignalR 
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            // The Key "acces_token" must be spelld correctly.
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chat")))
+                            {
+                                // Saving context for Authentication for SignalR into Token.
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        }
                     };
                 });
 

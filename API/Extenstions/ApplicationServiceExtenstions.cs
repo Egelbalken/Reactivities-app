@@ -32,7 +32,12 @@ namespace API.Extenstions
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+                    policy
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        // SignalR needs this cors policy to be added.
+                        .AllowCredentials()
+                        .WithOrigins("http://localhost:3000");
                 });
             });
 
@@ -49,6 +54,9 @@ namespace API.Extenstions
             // Check exact speling from apps.json
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
 
+            // Service for signalR Cahtt connection on Activity
+            // Allso need a endpoint for this in startap
+            services.AddSignalR();
             return services;
         }
     }

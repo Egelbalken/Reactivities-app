@@ -15,7 +15,7 @@ interface Props{
 const FormTextInput = (props: Props) => {
     
     // Then we use the hook useField 
-    const [field, meta] = useField(props.name)
+    const [field, meta] = useField(props.name);
 
 
     return (

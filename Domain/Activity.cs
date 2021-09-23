@@ -25,5 +25,7 @@ namespace Domain
         // Join entity table
         public ICollection<ActivityAttendee> Attendees { get; set; } = new List<ActivityAttendee>();
 
+        // Pops List for the entity for SingalR or Chatt
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

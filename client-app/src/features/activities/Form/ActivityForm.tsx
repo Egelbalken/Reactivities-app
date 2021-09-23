@@ -9,8 +9,8 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import FormTextInput from '../../../app/common/form/FormTextInput';
 import FormTextArea from '../../../app/common/form/FormTextArea';
-import FormSelectCategory from '../../../app/common/form/FormSelectCategory';
-import { categoryOptions } from '../../../app/common/options/FormOptions';
+import FormSelectInput from '../../../app/common/form/FormSelectInput';
+import { CategoryOptions } from '../../../app/common/options/CategoryOptions';
 import FormDateInput from '../../../app/common/form/FormDateInput';
 import { ActivityFormValues } from '../../../app/models/activity';
 import { v4 as uuid } from 'uuid';
@@ -66,8 +66,8 @@ import { v4 as uuid } from 'uuid';
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                 <Form className="ui form" onSubmit={handleSubmit} autoComplete='off'>
                     <FormTextInput name='title' placeholder='Title' />
-                    <FormTextArea name='description' placeholder='Description' />
-                    <FormSelectCategory options={categoryOptions} name='category' placeholder='Category' />
+                    <FormTextArea  name='description' placeholder='Description' />
+                    <FormSelectInput options={CategoryOptions} placeholder='Category' name='category'/>
                     <FormDateInput 
                         name='date' 
                         placeholderText='Date' 
@@ -80,7 +80,7 @@ import { v4 as uuid } from 'uuid';
                     <FormTextInput name='city' placeholder='City' />
                     <FormTextInput name='venue' placeholder='Venue' />
                     <Button
-                        disabled={isSubmitting || !dirty || !isValid} 
+                        disabled={isSubmitting || !dirty || !isValid}
                         loading={isSubmitting} 
                         floated='right' 
                         positive 

@@ -22,6 +22,7 @@ using FluentValidation.AspNetCore;
 using API.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using API.SignalR;
 
 namespace API
 {
@@ -92,6 +93,8 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                // Added endpoint for signal R, Allso add a service.SignalR()
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }

@@ -202,4 +202,9 @@ export default class ActivityStore {
             runInAction(() => this.loading = false)
         }
     }
+
+    // Clear the selected activity to kill a error for open Hub error
+    clearSelectedActivity = () => {
+        this.selectedActivity = undefined;
+    }
 }
