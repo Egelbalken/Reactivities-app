@@ -2,9 +2,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -23,8 +23,10 @@ namespace Application.Activities
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
-            public Hanlder(DataContext context, IMapper mapper)
+            private readonly IUserAccessor _userAccessor;
+            public Hanlder(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _mapper = mapper;
                 _context = context;
             }
@@ -34,7 +36,7 @@ namespace Application.Activities
                 var activity = await _context.Activities
                 // Project only what we vill have to be change.
                 // Mutch simplar and cleanr SQL queary
-                .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider, new { currentUsername = _userAccessor.GetUsername() })
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 
                 return Result<ActivityDto>.Success(activity);

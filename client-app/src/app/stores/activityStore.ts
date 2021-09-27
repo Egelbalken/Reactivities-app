@@ -203,6 +203,20 @@ export default class ActivityStore {
         }
     }
 
+    // Update the following helper method.
+    // If attendee is following, unfollow or wiseversa.
+    // set followingflag or not.
+    updateAttendeeFollowing = (username: string) => {
+        this.activityRegistry.forEach(activity => {
+            activity.attendees?.forEach(attendee => {
+                if(attendee.username === username){
+                    attendee.following ? attendee.followersCount-- : attendee.followersCount++;
+                    attendee.following = !attendee.following;
+                }
+            })
+        })
+    }
+
     // Clear the selected activity to kill a error for open Hub error
     clearSelectedActivity = () => {
         this.selectedActivity = undefined;

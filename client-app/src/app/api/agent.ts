@@ -120,12 +120,18 @@ const Profiles = {
             headers: {'Content-type': 'multipart/form-data'}
         })
     },
-// Object that sets the main photo of choise
-setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
-// Deletes the photo
-deletePhoto: (id: string) => requests.del(`/photos/${id}`),
-// Update the profile bio and username
-updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile)
+    // Object that sets the main photo of choise
+    setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+    // Deletes the photo
+    deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+    // Update the profile bio and username
+    updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),
+    // Update the following
+    updateFollowing: (username: string) => requests.post(`/follow/${username}`, {}),
+    //List the followings in to profile Followings
+    listFollowings: (username:string, predicate: string) => 
+        requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
+
 }
 
 // Create and export the object whit the list of activitys.
