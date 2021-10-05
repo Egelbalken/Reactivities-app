@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { observer } from 'mobx-react-lite';
 import { Link, NavLink } from 'react-router-dom';
-import { Container, Menu, Button, Image, Dropdown, Header } from 'semantic-ui-react'
+import { Container, Menu, Image, Dropdown } from 'semantic-ui-react'
 import { useStore } from '../stores/store';
 
 const Navbar = () => {
     // need to use a abserver becouse we need to know if a user has
     // been updated to the store.
-    const { userStore: {user, logout} } = useStore();
+    const { userStore: {user, logout, isLoggedIn} } = useStore();
     return (
         <Menu
             icon='labeled' 
@@ -18,12 +18,14 @@ const Navbar = () => {
                     as={NavLink} to='/' exact header style={{marginTop: '5px',marginBottom: '5px',width:'80px', marginRight:'80px'}}
                     src='/assets/imonit3.png' alt='logo' 
                 />
-               
-                <Menu.Item icon='compass' as={NavLink} to='/activities' name='Activities'/>
+                {isLoggedIn ? (
+                    <Fragment>
+
+                    <Menu.Item icon='compass' as={NavLink} to='/activities' name='Activities'/>
                 <Menu.Item icon='react' 
-                    as={NavLink} to='/createActivity'
-                    name='Create Activity'
-                    >
+                as={NavLink} to='/createActivity'
+                name='Create Activity'
+                >
                 </Menu.Item>
                 <Menu.Item icon='question' as={NavLink} to='/about' name='About' />
                 <Menu.Item icon='bug' as={NavLink} to='/errors' name='Errors'/>
@@ -40,13 +42,12 @@ const Navbar = () => {
                     text={user?.displayName}
                     icon='arrow alternate circle down outline'
                     color='white'
-                    >
+                >
                     <Dropdown.Menu>
                         <Dropdown.Item 
-
-                            as={Link} 
-                            to={`/profiles/${user?.username}`} 
-                            text='My Profile' icon='user' />
+                        as={Link} 
+                        to={`/profiles/${user?.username}`} 
+                        text='My Profile' icon='user' />
                         <Dropdown.Item 
                             color='white'
                             onClick={logout} 
@@ -55,6 +56,10 @@ const Navbar = () => {
                             />
                     </Dropdown.Menu>
                 </Dropdown>
+                            </Fragment>
+                ) : (<Menu.Item icon='question' as={NavLink} to='/about' name='About' />)
+
+                        }
             </Container>
         </Menu>
     )

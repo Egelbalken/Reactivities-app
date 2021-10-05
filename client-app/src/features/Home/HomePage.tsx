@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
-import { Link } from 'react-router-dom'
-import { Container, Header, Segment,Image, Button, Icon } from 'semantic-ui-react'
+import { Link, NavLink } from 'react-router-dom'
+import { Container, Header, Segment,Image, Button, Icon, Menu } from 'semantic-ui-react'
 import { useStore } from '../../app/stores/store';
 import LoginForm from '../users/LoginForm';
 import RegisterForm from '../users/RegisterForm';
@@ -8,7 +8,17 @@ import RegisterForm from '../users/RegisterForm';
 const HomePage = () => {
     const { userStore, modalStore } = useStore();
     return (
-        <Segment inverted textAlign='center' vertical className='masthead'>
+        <Segment textAlign='center' vertical className='masthead'>
+                    <Menu outline secondary fixed='top'>
+                        <Button style={{marginTop: '10px'}} animated position='right' inverted icon='question' as={NavLink} to='/about' name='About'>
+                            <Button.Content visible>
+                                <span><Icon name='question' /></span>About
+                            </Button.Content>
+                                <Button.Content hidden>
+                                    <Icon name='arrow right' content='About'/>
+                                </Button.Content>
+                        </Button>
+                    </Menu>
             <Container text>
                 <Header as='h1' inverted>
                     <Image size='massive' src='/assets/imonit3.png' alt='logo' style={{marginBottom: 22, marginTop: 22, width: '210px'}} />
@@ -31,7 +41,6 @@ const HomePage = () => {
                     </Button>
                     </Fragment>
                 )}
-
             </Container>
         </Segment>
     )
