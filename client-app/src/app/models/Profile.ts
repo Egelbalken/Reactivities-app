@@ -11,19 +11,23 @@ export interface Profile {
     photos?: Photo[];
 }
 
-// Class and Inteface can use same name.
-// We create a attendee object here.
 export class Profile implements Profile {
-    constructor(user: User){
+    constructor(user: User) {
         this.username = user.username;
         this.displayName = user.displayName;
         this.image = user.image;
     }
 }
 
-// Profile model interface
 export interface Photo {
     id: string;
     url: string;
     isMain: boolean;
+}
+
+export interface UserActivity {
+    id: string;
+    title: string;
+    category: string;
+    date: Date;
 }

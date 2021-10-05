@@ -3,7 +3,8 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { Activity, ActivityFormValues } from "../models/activity";
-import { Photo, Profile } from "../models/Profile";
+import { PaginatedResult } from "../models/pagination";
+import { Photo, Profile, UserActivity } from "../models/Profile";
 import { User, UserFormValues } from "../models/user";
 import { store } from "../stores/store";
 
@@ -39,7 +40,12 @@ axios.interceptors.request.use(config => {
 // Axios interseptors, delay on api respond.
 axios.interceptors.response.use(async response => {
         await sleep(1000);
-        return response;
+        const pagination = response.headers['pagination'];
+        if (pagination) {
+            response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+            return response as AxiosResponse<PaginatedResult<any>>
+    }
+    return response;
 }, (error: AxiosError) => {
     const {data, status, config} = error.response!;
     
@@ -94,7 +100,8 @@ const requests = {
 // store our activitys
 // This is going to be the base url + this place..
 const Activities = {
-    list: () => requests.get<Activity[]>('/activities'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Activity[]>>('/activities', { params })
+    .then(responseBody),
     details: (id: string) => requests.get<Activity>(`/activities/${id}`),
     create: (activity: ActivityFormValues) => requests.post<void>('/activities', activity),
     update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
@@ -128,9 +135,13 @@ const Profiles = {
     updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile),
     // Update the following
     updateFollowing: (username: string) => requests.post(`/follow/${username}`, {}),
-    //List the followings in to profile Followings
+    // List the followings in to profile Followings
     listFollowings: (username:string, predicate: string) => 
-        requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
+        requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+    // List all activities inside the events in profiles
+    listActivities: (username: string, predicate: string) =>
+        requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
+
 
 }
 

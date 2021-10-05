@@ -24,7 +24,7 @@ interface Props {
 }
 
 export default observer (function ActivityDetailedHeader({activity}: Props) {
-    const {activityStore: {UpdateAttendeence, loading, cancelActivityToggle}} = useStore()
+    const {activityStore: {updateAttendance, loading, cancelActivityToggle}} = useStore()
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
@@ -72,12 +72,12 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
                     </Fragment>
                     ) : activity.isGoing ? (
                         <Button 
-                            onClick={UpdateAttendeence} 
+                            onClick={updateAttendance} 
                             loading={loading}>Cancel attendance
                         </Button>
                     ) : (
                     <Button 
-                        onClick={UpdateAttendeence} 
+                        onClick={updateAttendance} 
                         disabled={activity.isCancelled} 
                         loading={loading} 
                         color='teal'>Join Activity
