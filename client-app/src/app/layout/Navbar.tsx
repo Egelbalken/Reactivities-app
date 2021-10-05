@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite';
 import { Link, NavLink } from 'react-router-dom';
-import { Container, Menu, Button, Image, Dropdown } from 'semantic-ui-react'
+import { Container, Menu, Button, Image, Dropdown, Header } from 'semantic-ui-react'
 import { useStore } from '../stores/store';
 
 const Navbar = () => {
@@ -9,39 +9,41 @@ const Navbar = () => {
     // been updated to the store.
     const { userStore: {user, logout} } = useStore();
     return (
-        <Menu 
-        inverted fixed='top'>
+        <Menu
+            icon='labeled' 
+            inverted secondary
+            fixed='top'>
             <Container>
-                <Menu.Item as={NavLink} to='/' exact header>
-                    <img 
+                <Image 
+                    as={NavLink} to='/' exact header style={{marginTop: '5px',marginBottom: '5px',width:'80px', marginRight:'80px'}}
                     src='/assets/imonit3.png' alt='logo' 
-                    style={{marginRight: '20px', width:'70px'}}>
-                    </img>
-                    Imonit Reactivities
-                </Menu.Item>
-                <Menu.Item as={NavLink} to='/activities' name='Activities'/>
-                <Menu.Item as={NavLink} to='/errors' name='Errors'/>
-                <Menu.Item as={NavLink} to='/about' name='About' />
-                <Menu.Item >
-                    <Button 
+                />
+               
+                <Menu.Item icon='compass' as={NavLink} to='/activities' name='Activities'/>
+                <Menu.Item icon='react' 
                     as={NavLink} to='/createActivity'
-                    positive 
-                    content='Create Activity'/>
+                    name='Create Activity'
+                    >
                 </Menu.Item>
+                <Menu.Item icon='question' as={NavLink} to='/about' name='About' />
+                <Menu.Item icon='bug' as={NavLink} to='/errors' name='Errors'/>
                 <Menu.Item position='right' >
                     <Image 
+                        size='tiny'
                         src={user?.image || '/assets/user.png'} 
                         avatar spaced='right'
                         alt="No image"
                         />
-                </Menu.Item >
-                <Dropdown   pointing='top left' 
-                            text={user?.displayName}
-                            icon='arrow alternate circle down outline'
-                            >
+                </Menu.Item>
+                <Dropdown   
+                    pointing='top left' 
+                    text={user?.displayName}
+                    icon='arrow alternate circle down outline'
+                    color='white'
+                    >
                     <Dropdown.Menu>
                         <Dropdown.Item 
-                            color='white'
+
                             as={Link} 
                             to={`/profiles/${user?.username}`} 
                             text='My Profile' icon='user' />

@@ -23,7 +23,7 @@ const sleep = (delay : number) => {
 }
 
 // Hardcoded way to the api backend
-axios.defaults.baseURL = "http://localhost:5000/api";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
 
 // We sending upp a allredy loaded token from localstroage.
 // If we update the site the user will otherwise get lost.
@@ -39,7 +39,10 @@ axios.interceptors.request.use(config => {
 
 // Axios interseptors, delay on api respond.
 axios.interceptors.response.use(async response => {
-        await sleep(1000);
+        //if we are in dev mode.. sleep
+        if(process.env.NODE_ENV === 'development'){
+            await sleep(1000);
+        }
         const pagination = response.headers['pagination'];
         if (pagination) {
             response.data = new PaginatedResult(response.data, JSON.parse(pagination));
