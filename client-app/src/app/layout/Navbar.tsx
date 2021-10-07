@@ -15,7 +15,7 @@ const Navbar = () => {
             fixed='top'>
             <Container>
                 <Image 
-                    as={NavLink} to='/' exact header style={{marginTop: '5px',marginBottom: '5px',width:'80px', marginRight:'80px'}}
+                    as={NavLink} to='/' exact header style={{marginTop: '10px',marginBottom: '5px',width:'80px', marginRight:'80px'}}
                     src='/assets/imonit3.png' alt='logo' 
                 />
                 {isLoggedIn ? (
@@ -38,7 +38,7 @@ const Navbar = () => {
                         />
                 </Menu.Item>
                 <Dropdown
-                    styles={{color:'white'}}
+                    id='username'
                     pointing='top left' 
                     text={user?.displayName}
                     icon='arrow alternate circle down outline'
