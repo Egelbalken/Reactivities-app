@@ -1,5 +1,5 @@
-export const CategoryOptions = [
-    {key:'travel', text: 'Travel', value: 'travel'},
+export const categoryOptions = [
+    {text: 'Travel', value: 'travel'},
     {text: 'Drinks', value: 'drinks'},
     {text: 'Culture', value: 'culture'},
     {text: 'Film', value: 'film'},

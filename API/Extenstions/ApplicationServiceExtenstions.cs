@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Application.Activities;
 using Application.Core;
 using Application.Interfaces;
@@ -24,7 +23,7 @@ namespace API.Extenstions
 
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
 
             // We need too allow this Policy to let the API get to our frontend from backend.

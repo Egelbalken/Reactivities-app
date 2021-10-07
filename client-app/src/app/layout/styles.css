@@ -52,13 +52,13 @@ i.arrow.alternate.circle.down.outline{
   
 }
 
-div.divider.text{
-  color: white;
-  margin-right: 10px;
-  margin-top: -10px;
-  font-size: 15px;}
+div.divider.text {
+  color: black;
+  font-size: 14px;
+}
 /*end home page styles*/
 
 .ui.form textarea{
   margin-top: 5px;
+  color: black;
 }

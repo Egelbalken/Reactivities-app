@@ -10,18 +10,19 @@ import * as Yup from 'yup';
 import FormTextInput from '../../../app/common/form/FormTextInput';
 import FormTextArea from '../../../app/common/form/FormTextArea';
 import FormSelectInput from '../../../app/common/form/FormSelectInput';
-import { CategoryOptions } from '../../../app/common/options/CategoryOptions';
 import FormDateInput from '../../../app/common/form/FormDateInput';
 import { ActivityFormValues } from '../../../app/models/activity';
 import { v4 as uuid } from 'uuid';
+import { categoryOptions } from '../../../app/common/options/categoryOptions';
 
 
     const ActivityForm = () => {
+
     const history = useHistory();
     const { activityStore } = useStore();
     const { createActivity, updateActivity, 
          loadActivity, loadingInitial } = activityStore;
-    const { id } = useParams<{id:string}>()
+    const { id } = useParams<{id:string}>();
 
     // Initial state values..
     const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
@@ -36,13 +37,13 @@ import { v4 as uuid } from 'uuid';
     })
 
     useEffect(() => {
-        if(id) loadActivity(id).then(activity => setActivity(new ActivityFormValues(activity)));
-    }, [id,loadActivity])
+        if (id) loadActivity(id).then(activity => setActivity(new ActivityFormValues(activity)))
+    }, [id, loadActivity]);
   
     /*
     */
-    const handleFormSubmit = (activity: ActivityFormValues) => {
-        if(!activity.id){
+    function handleFormSubmit(activity: ActivityFormValues) {
+        if (!activity.id) {
             let newActivity = {
                 ...activity,
                 id: uuid()
@@ -52,6 +53,7 @@ import { v4 as uuid } from 'uuid';
             updateActivity(activity).then(() => history.push(`/activities/${activity.id}`))
         }
     }
+    
     if(loadingInitial) return <LoadingComponent content='Loading activity...'/>
 
     // Formik enableReinitialize, collects the previus data from useState when editing.
@@ -67,7 +69,7 @@ import { v4 as uuid } from 'uuid';
                 <Form className="ui form" onSubmit={handleSubmit} autoComplete='off'>
                     <FormTextInput name='title' placeholder='Title' />
                     <FormTextArea  name='description' placeholder='Description' />
-                    <FormSelectInput options={CategoryOptions} placeholder='Category' name='category'/>
+                    <FormSelectInput options={categoryOptions} placeholder={'Category'} name='category'/>
                     <FormDateInput 
                         name='date' 
                         placeholderText='Date' 

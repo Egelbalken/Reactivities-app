@@ -1,22 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Activities;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using AutoMapper;
-using Persistence;
-using Application.Core;
 using API.Extenstions;
 using FluentValidation.AspNetCore;
 using API.Middleware;
@@ -83,6 +70,15 @@ namespace API
 
             app.UseRouting();
 
+            // 1.
+            // C# API runned React app
+            // added for run the react build as static file index.html from API
+            app.UseDefaultFiles();
+            // The we run the static files in wwwroot
+            app.UseStaticFiles();
+            // Allso add a UseEndpoint Fallback
+
+
             app.UseCors("CorsPolicy");
 
             // Need to be before we app.UseAuthorization();
@@ -95,6 +91,10 @@ namespace API
                 endpoints.MapControllers();
                 // Added endpoint for signal R, Allso add a service.SignalR()
                 endpoints.MapHub<ChatHub>("/chat");
+                //2.
+                // Endpont for react app run on API
+                endpoints.MapFallbackToController("Index", "Fallback");
+                // then create the fallback class in controllers
             });
         }
     }

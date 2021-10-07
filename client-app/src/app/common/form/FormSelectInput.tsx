@@ -14,10 +14,11 @@ const FormSelectInput = (props: Props) => {
     return (
         <Form.Field error={meta.touched && !!meta.error}>
             <label>{props.label}</label>
+            
             <Select 
                 clearable
                 options={props.options}
-                value={field.value || null}
+                value={field.value}
                 onChange={(e, d) => helpers.setValue(d.value)}
                 onBlur={() => helpers.setTouched(true)}
                 placeholder={props.placeholder}
