@@ -37,11 +37,11 @@ const Navbar = () => {
                         alt="No image"
                         />
                 </Menu.Item>
-                <Dropdown   
+                <Dropdown
+                    styles={{color:'white'}}
                     pointing='top left' 
                     text={user?.displayName}
                     icon='arrow alternate circle down outline'
-                    color='white'
                 >
                     <Dropdown.Menu>
                         <Dropdown.Item 
@@ -49,7 +49,6 @@ const Navbar = () => {
                         to={`/profiles/${user?.username}`} 
                         text='My Profile' icon='user' />
                         <Dropdown.Item 
-                            color='white'
                             onClick={logout} 
                             text='logout'
                             icon='power'

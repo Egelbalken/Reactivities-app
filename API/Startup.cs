@@ -72,13 +72,13 @@ namespace API
             // if UseCspReportOnly we can read all security issues.
             // If using UseCsp.. Allow thins outside the domain.
             // We addon a customSourse to allow them.
-            app.UseCsp(opt => opt
+            app.UseCspReportOnly(opt => opt
                 .BlockAllMixedContent()
                 .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com/"))
                 .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:"))
                 .FormActions(s => s.Self())
                 .FrameAncestors(s => s.Self())
-                .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com"))
+                .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com", "blob:"))
                 .ScriptSources(s => s.Self().CustomSources("sha256-Rh8MTEBtFMyFx6O4lsoOVvHhuLlcTgXK7ygQ7YPzl5A="))
             );
 
