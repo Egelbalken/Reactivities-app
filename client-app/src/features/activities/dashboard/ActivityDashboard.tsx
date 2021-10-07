@@ -17,7 +17,7 @@ const ActivityDashboard = () => {
 
         function handleGetNext() {
             setLoadingNext(true);
-            console.log("totalpages:" + pagination?.totalPages + " titalItems:" + pagination?.totalItems + " currentPage:" + pagination?.currentPage)
+            //console.log("totalpages:" + pagination?.totalPages + " titalItems:" + pagination?.totalItems + " currentPage:" + pagination?.currentPage)
             setPagingParams(new PagingParams(pagination!.currentPage + 1))
             loadActivities().then(() => setLoadingNext(false));
         }
